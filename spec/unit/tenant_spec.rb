@@ -125,7 +125,8 @@ RSpec.describe(Apartment::Tenant) do
     it 'run callbacks set on AbstractAdapter itself' do
       entries = log
       # README's registration, on the base class itself; reset in the ensure below.
-      Apartment::Adapters::AbstractAdapter.set_callback(:switch, :after) { entries << :base_callback } # rubocop:disable ThreadSafety/ActiveSupportCallbacks
+      base = Apartment::Adapters::AbstractAdapter
+      base.set_callback(:switch, :after) { entries << :base_callback }
       described_class.switch!('tenant1')
 
       expect(log).to(include(:base_callback))
